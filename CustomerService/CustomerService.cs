@@ -12,7 +12,20 @@ public sealed class CustomerService
         CreateCustomersTable();
     }
 
-    public IEnumerable<Customer> GetCustomers(){
+    private void CreateCustomersTable()
+    {
+        using var connection = _dbConnectionProvider.GetConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = "create table if not exists "+ 
+         "Customers(id bigint not null "+
+                  ", name varchar not null "+
+                  ", Primary Key(id))";
+        command.Connection?.Open();
+        command.ExecuteNonQuery();
+    }
+  
+    public IEnumerable<Customer> GetCustomers()
+    {
         IList<Customer> customers = new List<Customer>();
 
         using var connection = _dbConnectionProvider.GetConnection();
@@ -49,16 +62,4 @@ public sealed class CustomerService
         command.ExecuteNonQuery();
     }
     
-    private void CreateCustomersTable()
-    {
-        using var connection = _dbConnectionProvider.GetConnection();
-        using var command = connection.CreateCommand();
-        command.CommandText = "create table if not exists "+ 
-         "Customers(id bigint not null "+
-                  ", name varchar not null "+
-                  ", Primary Key(id))";
-        command.Connection?.Open();
-        command.ExecuteNonQuery();
-    }
-
 }
