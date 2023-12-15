@@ -11,7 +11,7 @@ public sealed class CustomerService
         _dbConnectionProvider = dbConnectionProvider;
         CreateCustomersTable();
     }
-
+   
     private void CreateCustomersTable()
     {
         using var connection = _dbConnectionProvider.GetConnection();
